@@ -49,9 +49,6 @@ make
 make install
 echo "fakechroot vendored" | indent
 
-DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make
-DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make install
-
 cd $BUILDPACK_DIR
 echo "-----> Bootstraping a new base ubuntu lucid into /app/.root/"
 mkdir -p $BUILD_DIR/.root
@@ -62,6 +59,9 @@ echo "/app/.root bootstraped" | indent
 sed -i -e "s/#force_color_prompt=yes/force_color_prompt=yes/" $BUILD_DIR/.root/root/.bashrc
 echo "export PATH=/sbin:/usr/sbin:\$PATH" >> $BUILD_DIR/.root/root/.bashrc
 echo "cd $HOME" >> $BUILD_DIR/.root/root/.bashrc
+
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make install
 
 echo "-----> Updating packages"
 fakechroot fakeroot chroot $BUILD_DIR/.root bash -c "cat > /etc/apt/sources.list <<EOF
