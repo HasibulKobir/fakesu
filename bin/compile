@@ -37,8 +37,6 @@ cd $DEBOOTSTRAP_BUILD
 wget http://ftp.debian.org/debian/pool/main/d/debootstrap/debootstrap_1.0.89.tar.gz
 tar zxvf debootstrap_1.0.89.tar.gz
 cd debootstrap
-DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make
-DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make install
 echo "debootstrap installed" | indent
 
 echo "-----> Fetching, installing and vendoring fakechroot into /app/.tools/fakechroot/"
@@ -50,6 +48,9 @@ cd fakechroot
 make
 make install
 echo "fakechroot vendored" | indent
+
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make install
 
 cd $BUILDPACK_DIR
 echo "-----> Bootstraping a new base ubuntu lucid into /app/.root/"
