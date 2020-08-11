@@ -52,25 +52,25 @@ echo "fakechroot vendored" | indent
 cd $BUILDPACK_DIR
 echo "-----> Bootstraping a new base ubuntu lucid into /app/.root/"
 mkdir -p $BUILD_DIR/.root
-fakechroot -s fakeroot debootstrap --no-check-gpg --variant=fakechroot lucid $BUILD_DIR/.root
-fakechroot fakeroot chroot $BUILD_DIR/.root apt-get install -y --force-yes gpgv
+fakechroot -s fakechroot debootstrap --no-check-gpg --variant=fakechroot lucid $BUILD_DIR/.root
+fakechroot fakechroot chroot $BUILD_DIR/.root apt-get install -y --force-yes gpgv
 echo "/app/.root bootstraped" | indent
 
 sed -i -e "s/#force_color_prompt=yes/force_color_prompt=yes/" $BUILD_DIR/.root/root/.bashrc
 echo "export PATH=/sbin:/usr/sbin:\$PATH" >> $BUILD_DIR/.root/root/.bashrc
 echo "cd $HOME" >> $BUILD_DIR/.root/root/.bashrc
 
-DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make
-DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make install
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakechroot make
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakechroot make install
 
 echo "-----> Updating packages"
-fakechroot fakeroot chroot $BUILD_DIR/.root bash -c "cat > /etc/apt/sources.list <<EOF
+fakechroot fakechroot chroot $BUILD_DIR/.root bash -c "cat > /etc/apt/sources.list <<EOF
 deb http://archive.ubuntu.com/ubuntu lucid main universe
 deb http://archive.ubuntu.com/ubuntu lucid-security main
 deb http://archive.ubuntu.com/ubuntu lucid-updates main
 EOF"
-fakechroot fakeroot chroot $BUILD_DIR/.root apt-get update
-fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES
+fakechroot fakechroot chroot $BUILD_DIR/.root apt-get update
+fakechroot fakechroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES
 echo "packages updated" | indent
 
 cd $BUILD_DIR/.root
