@@ -39,8 +39,6 @@ APT_STATE_DIR="$BUILD_DIR/apt/state"
 export PATH=$APT_STATE_DIR
 export PATH=$APT_CACHE_DIR
 
-ls $APT_CACHE_DIR
-ls $APT_STATE_DIR
 
 APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
 APT_FORCE_YES="--force-yes"
